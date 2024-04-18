@@ -30,9 +30,6 @@ def start_check_auth(session):
         delete_jwt()
         return None, None
 
-    
-
-
 def login(session, email, password):
     user = session.query(User).filter_by(email=email).first()
     if not user:
@@ -46,7 +43,7 @@ def login(session, email, password):
 
 @login_require
 def register(session, nom, email, telephone, type_user, client={}, collaborateur={}, collaborateur_id=None, user_role=None):
-    verif_mail = session.query(User).filter_by(email=email).fist()
+    verif_mail = session.query(User).filter_by(email=email).first()
     if verif_mail:
         return False, "Email already used"
     new_user = User(
@@ -64,9 +61,10 @@ def register(session, nom, email, telephone, type_user, client={}, collaborateur
         )
         session.add(new_client)
         session.commit()
+        return True, "Client crée avec success !"
     if type_user == "collaborateur":
         if user_role == "admin":
-            role = session.query(Role).filter_by(nom=collaborateur["role"])
+            role = session.query(Role).filter_by(nom=collaborateur["role"]).first()
             if not role:
                 return False, "Invalid role"
             

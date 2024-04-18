@@ -9,11 +9,10 @@ def menu_view(user=None, role=None):
       print(banner)
       if user and role:
             print(f"\nBonjour {user} (role : {role})")
-            print("     1: Crée un Client")
+            print("     1: Crée un Client ou un Collaborateur (role admin nécessaire pour crée un collaborateur) ")
             print("     2: Crée un Contrat")
             print("     3: crée un Evenement")
-            print("     5: Crée un Collaborateur (role admin nécessaire)")
-            print("     4: logout")
+            print("     5: logout")
             choix = input("\nEpicEvent# ")
             return int(choix)
       else:
