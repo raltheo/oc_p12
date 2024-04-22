@@ -19,12 +19,13 @@ def create_client_view():
 
 def update_client_view(clients):
     show_client(clients)
-    col_to_update = {"1": "nom", "2": "email", "3": "telephone", "4" : "nom_entreprise"}
+    col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "Entreprise"}
     id_client = input("Choisissez l'ID du client à modifié : ")
     [print(f"    {key}: {value}") for key, value in col_to_update.items()]
     choix = input("Choisissez un champ a modifier : ")
     try : 
-        col = col_to_update[choix]
+        col_to_update[choix]
+        col = int(choix)
     except:
         print("merci de faire correctement")
     new_data = input("Entrez la valeur : ")

@@ -19,15 +19,24 @@ def liste_client(session, collaborateur_id=None, user_role=None):
     return data
 
 @login_require
-def update_client(session, client_id, col_to_update, data, collaborateur_id=None, user_role=None):
+def update_client(session, client_id, col, data, collaborateur_id=None, user_role=None):
     client = session.query(Client).filter_by(clientId=client_id).first()
     # je ne sais pas qui peut faire quoi je verrai plus tard pour les auth
+    if col == 2:
+        verif_mail = session.query(User).filter_by(email=data).first()
+        if verif_mail:
+            return False, "Email already used"
     if client:
         try:
-            setattr(client, col_to_update, data)
+            if col == 1: client.user.nom = data
+            elif col == 2: client.user.email = data
+            elif col == 3: client.user.telephone = data
+            elif col == 4: client.nom_entreprise = data
+            else: return False, "Mauvais choix"
             session.commit()
             return True, "Client mis a jour !"
-        except:
+        except Exception as e:
+            print(e)
             session.rollback()
             return False, "Une erreur est survenue !"
     return False, "Client introuvable"
@@ -58,28 +67,28 @@ def create_client(session, nom, email, telephone, nom_entreprise, collaborateur_
 
 @login_require
 def menu_client(session, collaborateur_id=None, user_role=None):
-    choix = menu_client_view()
-    if choix == 1:
-        show_client(liste_client(session))
-        menu_client(session)
-    if choix == 2:
-        nom, email, telephone, nom_entreprise = create_client_view()
-        state, message = create_client(session, nom, email, telephone, nom_entreprise)
-        if state == True:
-            green_print(message)
-            menu_client(session)
+    while True:
+        choix = menu_client_view()
+        if choix == 1:
+            show_client(liste_client(session))
+        if choix == 2:
+            nom, email, telephone, nom_entreprise = create_client_view()
+            state, message = create_client(session, nom, email, telephone, nom_entreprise)
+            if state == True:
+                green_print(message)
+            else:
+                red_print(message)
+        if choix == 3:
+            id_client, col, new_data = update_client_view(liste_client(session))
+            state, message = update_client(session, id_client, col, new_data)
+            if state == True:
+                green_print(message)
+            else:
+                red_print(message)
+        if choix == 4:
+            print("delete not implemented")
+        if choix == 5:
+            break
         else:
-            red_print(message)
-            menu_client(session)
-    if choix == 3:
-        id_client, col, new_data = update_client_view(liste_client(session))
-        update_client(session, id_client, col, new_data)
-        state, message = menu_client(session)
-        if state == True:
-            green_print(message)
-            menu_client(session)
-        else:
-            red_print(message)
-            menu_client(session)
-    if choix == 5:
-        return
+            print("please enter good number")
+    return
