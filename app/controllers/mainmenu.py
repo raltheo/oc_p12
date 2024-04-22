@@ -4,7 +4,7 @@ from app.views import menu_view, login_view
 from app.utils import red_print, green_print, delete_jwt
 from app.controllers.client import menu_client
 from app.controllers.collaborateur import menu_collaborateur
-
+from app.controllers.contrat import menu_contrat
 
 session = SessionLocal()
 
@@ -17,6 +17,8 @@ def start_app():
                 menu_client(session)
             if choix == 2:
                 menu_collaborateur(session)
+            if choix == 3:
+                menu_contrat(session)
             if choix == 5:
                 delete_jwt()
                 exit(0)
