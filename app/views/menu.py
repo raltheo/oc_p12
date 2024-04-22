@@ -14,6 +14,7 @@ def menu_view(user=None, role=None):
             print("     3: Gerer les Contrats")
             print("     4: Gerer les Evenements")
             print("     5: logout")
+            print("     6: Quitter sans se déconnecter")
             choix = input("\nEpicEvent# ")
             return int(choix)
       else:

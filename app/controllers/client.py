@@ -1,7 +1,7 @@
 from app.models import Client, Collaborateur, User
-from app.views import show_client, menu_client_view, create_client_view, update_client_view
+from app.views import show_client, menu_client_view, create_client_view, update_client_view, delete_client_view
 from app.utils import red_print, green_print
-from app.middleware.auth import login_require
+from app.middleware import require_role, login_require
 
 @login_require
 def liste_client(session, collaborateur_id=None, user_role=None):
@@ -19,9 +19,11 @@ def liste_client(session, collaborateur_id=None, user_role=None):
     return data
 
 @login_require
+@require_role(["admin", "commercial"])
 def update_client(session, client_id, col, data, collaborateur_id=None, user_role=None):
     client = session.query(Client).filter_by(clientId=client_id).first()
-    # je ne sais pas qui peut faire quoi je verrai plus tard pour les auth
+    if client.collaborateurId != collaborateur_id and user_role != "admin":
+        return False, "Vous devez être le commercial du client pour pouvoir faire cela."
     if col == 2:
         verif_mail = session.query(User).filter_by(email=data).first()
         if verif_mail:
@@ -43,6 +45,7 @@ def update_client(session, client_id, col, data, collaborateur_id=None, user_rol
 
 
 @login_require
+@require_role(["admin", "commercial"])
 def create_client(session, nom, email, telephone, nom_entreprise, collaborateur_id=None, user_role=None):
     verif_mail = session.query(User).filter_by(email=email).first()
     if verif_mail:
@@ -66,6 +69,18 @@ def create_client(session, nom, email, telephone, nom_entreprise, collaborateur_
     
 
 @login_require
+@require_role(["admin", "commercial"])
+def delete_client(session, client_id, collaborateur_id=None, user_role=None):
+    client = session.query(Client).filter_by(clientId=client_id).first()
+    if client:
+        if client.collaborateurId == collaborateur_id or user_role == "admin":
+            session.delete(client)
+            session.commit()
+            return True, "Client supprimé."
+        return False, "Vous devez être le commercial du client pour le supprimer."
+    return False, "Client introuvable"
+
+@login_require
 def menu_client(session, collaborateur_id=None, user_role=None):
     while True:
         choix = menu_client_view()
@@ -86,7 +101,12 @@ def menu_client(session, collaborateur_id=None, user_role=None):
             else:
                 red_print(message)
         if choix == 4:
-            print("delete not implemented")
+            client_id = delete_client_view(liste_client(session))
+            state, message = delete_client(session, client_id)
+            if state == True:
+                green_print(message)
+            else:
+                red_print(message)
         if choix == 5:
             break
         else:

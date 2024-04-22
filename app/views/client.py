@@ -32,7 +32,6 @@ def update_client_view(clients):
     return id_client, col, new_data
 
 def menu_client_view():
-    print("\n")
     print("Gestion des Clients")
     print("    1: Afficher les Clients")
     print("    2: Crée un client")
@@ -41,3 +40,9 @@ def menu_client_view():
     print("    5: Retour")
     choix = input("\nEpicEvent# ")
     return int(choix)
+
+
+def delete_client_view(clients):
+    show_client(clients)
+    client_id = int(input("Entrez l'Id du client a supprimer : "))
+    return client_id
