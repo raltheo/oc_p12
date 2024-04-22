@@ -9,6 +9,27 @@ def show_client(clients):
     print(x)
     print("\n")
 
+def create_client_view():
+    nom = input("Entrez le nom de l'utilsateur : ")
+    email = input("Entrez l'email de l'utilisateur : ")
+    telephone = input("Entrez le numéro de téléphone de l'utilisateur : ")
+    nom_entreprise = input("Entrez le nom de l'entreprise du client : ")
+    return nom, email, telephone, nom_entreprise
+
+
+def update_client_view(clients):
+    show_client(clients)
+    col_to_update = {"1": "nom", "2": "email", "3": "telephone", "4" : "nom_entreprise"}
+    id_client = input("Choisissez l'ID du client à modifié : ")
+    [print(f"    {key}: {value}") for key, value in col_to_update.items()]
+    choix = input("Choisissez un champ a modifier : ")
+    try : 
+        col = col_to_update[choix]
+    except:
+        print("merci de faire correctement")
+    new_data = input("Entrez la valeur : ")
+    return id_client, col, new_data
+
 def menu_client_view():
     print("\n")
     print("Gestion des Clients")

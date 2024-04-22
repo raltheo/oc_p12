@@ -14,6 +14,7 @@ def start_app():
         choix = menu_view(username, role)
         if choix == 1:
             menu_client(session)
+            start_app()
         if choix == 2:
             print("menu collaborateur")
     else:   
