@@ -1,2 +1,3 @@
-from .auth import login_view, register_view
-from .menu import menu_view
+from .auth import *
+from .menu import *
+from .client import *
