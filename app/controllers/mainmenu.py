@@ -24,7 +24,7 @@ def start_app():
                 menu_evenement(session)
             if choix == 5:
                 delete_jwt()
-                exit(0)
+                break
             if choix == 6:
                 break
         exit(0)
