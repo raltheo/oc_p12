@@ -21,6 +21,22 @@ def liste_contrat(session, collaborateur_id=None, user_role=None):
                      ])
     return data
 
+
+@login_require
+def liste_my_contrat(session, collaborateur_id=None, user_role=None):
+    contrats = session.query(Contrat).filter_by(commercialId=collaborateur_id).all()
+    data = []
+    for contrat in contrats:
+        data.append([contrat.contratId,
+                     contrat.client.user.email, 
+                     contrat.commercial.user.email,
+                     contrat.montant_total,
+                     contrat.montant_restant,
+                     contrat.status_contrat,
+                     contrat.created_at
+                     ])
+    return data
+
 @login_require
 @require_role(["admin", "gestion"])
 def create_contrat(session, client_id, montant_total, montant_restant, status_contrat, collaborateur_id=None, user_role=None):

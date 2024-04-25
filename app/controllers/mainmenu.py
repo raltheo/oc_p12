@@ -5,6 +5,7 @@ from app.utils import red_print, green_print, delete_jwt
 from app.controllers.client import menu_client
 from app.controllers.collaborateur import menu_collaborateur
 from app.controllers.contrat import menu_contrat
+from app.controllers.evenement import menu_evenement
 
 session = SessionLocal()
 
@@ -19,6 +20,8 @@ def start_app():
                 menu_collaborateur(session)
             if choix == 3:
                 menu_contrat(session)
+            if choix == 4:
+                menu_evenement(session)
             if choix == 5:
                 delete_jwt()
                 exit(0)

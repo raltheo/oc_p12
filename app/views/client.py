@@ -1,4 +1,6 @@
 from prettytable import PrettyTable
+from app.utils import input_int
+
 
 def show_client(clients):
     x = PrettyTable()
@@ -20,16 +22,15 @@ def create_client_view():
 def update_client_view(clients):
     show_client(clients)
     col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "Entreprise"}
-    id_client = input("Choisissez l'ID du client à modifié : ")
+    id_client = input_int("Choisissez l'ID du client à modifié : ")
     [print(f"    {key}: {value}") for key, value in col_to_update.items()]
-    choix = input("Choisissez un champ a modifier : ")
+    choix = input_int("Choisissez un champ a modifier : ")
     try : 
         col_to_update[choix]
-        col = int(choix)
     except:
         print("merci de faire correctement")
     new_data = input("Entrez la valeur : ")
-    return id_client, col, new_data
+    return id_client, choix, new_data
 
 def menu_client_view():
     print("Gestion des Clients")
@@ -38,11 +39,11 @@ def menu_client_view():
     print("    3: Modifier un client")
     print("    4: Supprimé un client")
     print("    5: Retour")
-    choix = input("\nEpicEvent# ")
-    return int(choix)
+    choix = input_int("\nEpicEvent# ")
+    return choix
 
 
 def delete_client_view(clients):
     show_client(clients)
-    client_id = int(input("Entrez l'Id du client a supprimer : "))
+    client_id = input_int("Entrez l'Id du client a supprimer : ")
     return client_id

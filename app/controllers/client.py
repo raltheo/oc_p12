@@ -19,6 +19,22 @@ def liste_client(session, collaborateur_id=None, user_role=None):
     return data
 
 @login_require
+def liste_my_client(session, collaborateur_id=None, user_role=None):
+    clients = session.query(Client).filter_by(collaborateurId=collaborateur_id).all()
+    data = []
+    for client in clients:
+        collaborateur = session.query(Collaborateur).filter_by(collaborateurId=client.collaborateurId).first()
+        client.nom_collaborator = collaborateur.user.email
+        data.append([client.clientId,
+                     client.user.nom, 
+                     client.user.email,
+                     client.user.telephone,
+                     client.nom_entreprise,
+                     client.nom_collaborator])
+    return data
+
+
+@login_require
 @require_role(["admin", "commercial"])
 def update_client(session, client_id, col, data, collaborateur_id=None, user_role=None):
     client = session.query(Client).filter_by(clientId=client_id).first()

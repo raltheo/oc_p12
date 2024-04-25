@@ -1,4 +1,5 @@
 from prettytable import PrettyTable
+from app.utils import input_int
 
 def show_collaborateur(clients):
     x = PrettyTable()
@@ -21,16 +22,15 @@ def create_collaborateur_view():
 def update_collaborateur_view(collaborateurs):
     show_collaborateur(collaborateurs)
     col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "role", "5": "password"}
-    id_collaborateur = input("Choisissez l'ID du collaborateur à modifié : ")
+    id_collaborateur = input_int("Choisissez l'ID du collaborateur à modifié : ")
     [print(f"    {key}: {value}") for key, value in col_to_update.items()]
-    choix = input("Choisissez un champ a modifier : ")
+    choix = input_int("Choisissez un champ a modifier : ")
     try : 
         col_to_update[choix]
-        col = int(choix)
     except:
         print("merci de faire correctement")
     new_data = input("Entrez la valeur : ")
-    return id_collaborateur, col, new_data
+    return id_collaborateur, choix, new_data
 
 def menu_collaborateur_view():
     print("\n")
@@ -40,10 +40,10 @@ def menu_collaborateur_view():
     print("    3: Modifier un Collaborateur")
     print("    4: Supprimé un Collaborateur")
     print("    5: Retour")
-    choix = input("\nEpicEvent# ")
-    return int(choix)
+    choix = input_int("\nEpicEvent# ")
+    return choix
 
 def delete_collaborateur_view(collaborateurs):
     show_collaborateur(collaborateurs)
-    col_id = int(input("Entrez l'Id du collaborateur a supprimer : "))
+    col_id = input_int("Entrez l'Id du collaborateur a supprimer : ")
     return col_id

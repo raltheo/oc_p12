@@ -16,3 +16,4 @@ class Client(Base):
     collaborateur = relationship('Collaborateur', back_populates='clients')
     contrats = relationship('Contrat', back_populates='client')
     user = relationship('User', back_populates='client', uselist=False)
+    evenements = relationship('Evenement', back_populates='client')
