@@ -18,6 +18,19 @@ def liste_collaborateur(session, collaborateur_id=None, user_role=None):
     return data
 
 @login_require
+def get_support(session, collaborateur_id=None, user_role=None):
+    collaborateurs = session.query(Collaborateur).filter_by(role_id=3).all()
+    data = []
+    for collaborateur in collaborateurs:
+        data.append([collaborateur.collaborateurId,
+                     collaborateur.user.nom, 
+                     collaborateur.user.email,
+                     collaborateur.user.telephone,
+                     collaborateur.role.nom
+                     ])
+    return data
+
+@login_require
 @require_role(["admin", "gestion"])
 def update_collaborateur(session, collaborator_id, col, data, collaborateur_id=None, user_role=None):
     collaborateur = session.query(Collaborateur).filter_by(collaborateurId=collaborator_id).first()

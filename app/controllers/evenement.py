@@ -1,7 +1,8 @@
 from app.middleware import login_require, require_role
-from app.models import Evenement, Contrat
+from app.models import Evenement, Contrat, Collaborateur
 from app.views import show_evenement, menu_evenement_view, filtre_evenement_view, create_evenement_view, update_evenement_view, delete_evenement_view
 from app.controllers.contrat import liste_my_contrat
+from app.controllers.collaborateur import get_support
 from app.utils import red_print, green_print
 from datetime import datetime
 
@@ -86,6 +87,10 @@ def update_evenement(session, evenement_id, col, data, collaborateur_id=None, us
         return False, "Vous ne pouvez pas mettre a jour les evenements ou vous n'êtes pas associer"
     if col != 3 and user_role == "gestion":
         return False, "Vous pouvez mettre à jour uniquement les support en charge de cet evenement"
+    if col == 3:
+        support = session.query(Collaborateur).filter_by(collaborateurId=data).first()
+        if not support or support.role.nom != "support":
+            return False, "Merci de mettre l'Id d'un support"
     if evenement:
         try:
             if col == 1: evenement.date_debut = data
@@ -111,14 +116,14 @@ def menu_evenement(session, collaborateur_id=None, user_role=None):
         if choix == 1:
             show_evenement(liste_evenement(session))
         if choix == 2:
-            contrat_id, date_debut, date_fin, lieu, support_id, nombre_invite, note = create_evenement_view(liste_my_contrat(session))
+            contrat_id, date_debut, date_fin, lieu, support_id, nombre_invite, note = create_evenement_view(liste_my_contrat(session), get_support(session))
             state, message = create_evenement(session, contrat_id, date_debut, date_fin, lieu, support_id, nombre_invite, note)
             if state == True:
                 green_print(message)
             else:
                 red_print(message)
         if choix == 3:
-            id_evenement, col, new_data = update_evenement_view(liste_evenement(session))
+            id_evenement, col, new_data = update_evenement_view(liste_evenement(session), get_support(session))
             state, message = update_evenement(session, id_evenement, col, new_data)
             if state == True:
                 green_print(message)

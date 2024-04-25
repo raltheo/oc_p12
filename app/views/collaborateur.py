@@ -20,7 +20,7 @@ def create_collaborateur_view():
     return nom, email, telephone, role, password
 
 
-def update_collaborateur_view(collaborateurs):
+def update_collaborateur_view(collaborateurs, supports):
     show_collaborateur(collaborateurs)
     col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "role", "5": "password"}
     id_collaborateur = input_int("Choisissez l'ID du collaborateur à modifié : ")
@@ -37,7 +37,6 @@ def update_collaborateur_view(collaborateurs):
     return id_collaborateur, choix, new_data
 
 def menu_collaborateur_view():
-    print("\n")
     print("Gestion des Collaborateurs")
     print("    1: Afficher les Collaborateurs")
     print("    2: Crée un Collaborateur")

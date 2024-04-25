@@ -1,4 +1,4 @@
-from app.views import show_client, show_contrat
+from app.views import show_client, show_contrat, show_collaborateur
 from prettytable import PrettyTable
 from app.utils import input_date, input_int
 
@@ -33,7 +33,8 @@ def filtre_evenement_view():
     print("    1: Afficher les evenements sans support associé")
     choix = input_int("\nEpicEvent# ")
     return choix
-def create_evenement_view(contrats):
+
+def create_evenement_view(contrats, supports):
     show_contrat(contrats)
     contrat_id = input_int("Choisissez l'ID du contrat a rattacher a l'évenement : ")
     date_debut = input_date("Entrez la date de debut (format jj/mm/aaaa) : ")
@@ -41,6 +42,7 @@ def create_evenement_view(contrats):
     lieu = input("Entrez le lieu de l'evenement : ")
     y_or_n = input("Associer un support ? (y or n) : ")
     if y_or_n == "y":
+        show_collaborateur(supports)
         support_id = input_int("Entrez l' Id du support pour cette evenement : ") 
     else:
         support_id = None
@@ -54,7 +56,7 @@ def delete_evenement_view(evenements):
     evenement_id = input_int("Entrez l'Id du contrat a supprimer : ")
     return evenement_id
 
-def update_evenement_view(evenements):
+def update_evenement_view(evenements, supports):
     show_evenement(evenements)
     col_to_update = {"1": "date début", "2": "date fin", "3": "changer / ajouter support", "4": "lieu", "5":"nombre d'invité", "6" :"note"}
     id_contrat = input_int("Choisissez l'ID de l'evenement à modifié : ")
@@ -67,6 +69,7 @@ def update_evenement_view(evenements):
     if choix == 1 or choix == 2 :
         new_data = input_date("Entrez la nouvelle valeur : ") 
     elif choix == 3:
+        show_collaborateur(supports)
         new_data = input_int("Entrez la nouvelle valeur (L'Id du nouveau support) : ")
     elif choix == 5:
         new_data = input_int("Entrez la nouvelle valeur : ")
