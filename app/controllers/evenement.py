@@ -1,7 +1,6 @@
 from app.middleware import login_require, require_role
-from app.models import Client, Evenement, Contrat
-from app.views import show_evenement, menu_evenement_view, create_evenement_view, update_evenement_view
-from app.controllers.client import liste_my_client
+from app.models import Evenement, Contrat
+from app.views import show_evenement, menu_evenement_view, create_evenement_view, update_evenement_view, delete_evenement_view
 from app.controllers.contrat import liste_my_contrat
 from app.utils import red_print, green_print
 from datetime import datetime
@@ -52,14 +51,14 @@ def create_evenement(session, contrat_id, date_debut, date_fin, lieu, support_id
     return False, "Contrat introuvable."
 
 @login_require
-@require_role(["admin", "gestion"])
-def delete_evenement(session, contrat_id, collaborateur_id=None, user_role=None):
-    contrat = session.query(Evenement).filter_by(contratId=contrat_id).first()
-    if contrat:
-            session.delete(contrat)
+@require_role(["admin"])
+def delete_evenement(session, evenement_id, collaborateur_id=None, user_role=None):
+    evenement = session.query(Evenement).filter_by(evenementId=evenement_id).first()
+    if evenement:
+            session.delete(evenement)
             session.commit()
-            return True, "Contrat supprimé."
-    return False, "Contrat introuvable"
+            return True, "Evenement supprimé."
+    return False, "Evenement introuvable"
 
 @login_require
 @require_role(["admin", "gestion", "support"])
@@ -107,13 +106,13 @@ def menu_evenement(session, collaborateur_id=None, user_role=None):
                 green_print(message)
             else:
                 red_print(message)
-        # if choix == 4:
-        #     contrat_id = delete_contrat_view(liste_contrat(session))
-        #     state, message = delete_contrat(session, contrat_id)
-        #     if state == True:
-        #         green_print(message)
-        #     else:
-        #         red_print(message)
+        if choix == 4:
+            contrat_id = delete_evenement_view(liste_evenement(session))
+            state, message = delete_evenement(session, contrat_id)
+            if state == True:
+                green_print(message)
+            else:
+                red_print(message)
         if choix == 5:
             break
     return

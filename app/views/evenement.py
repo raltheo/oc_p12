@@ -44,10 +44,10 @@ def create_evenement_view(contrats):
 
     return contrat_id, date_debut, date_fin, lieu, support_id, nombre_invite, note
 
-def delete_contrat_view(contrats):
-    show_contrat(contrats)
-    contrat_id = int(input("Entrez l'Id du contrat a supprimer : "))
-    return contrat_id
+def delete_evenement_view(evenements):
+    show_evenement(evenements)
+    evenement_id = input_int("Entrez l'Id du contrat a supprimer : ")
+    return evenement_id
 
 def update_evenement_view(evenements):
     show_evenement(evenements)
