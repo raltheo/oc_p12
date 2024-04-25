@@ -49,6 +49,10 @@ def liste_evenement(session, collaborateur_id=None, user_role=None):
 @require_role(["admin", "commercial"])
 def create_evenement(session, contrat_id, date_debut, date_fin, lieu, support_id, nombre_invite, note, collaborateur_id=None, user_role=None):
     contrat = session.query(Contrat).filter_by(contratId=contrat_id).first()
+    if support_id != None:
+        support = session.query(Collaborateur).filter_by(collaborateurId=support_id).first()
+        if not support or support.role.nom != "support":
+            return False, "Merci de mettre l'Id d'un support"
     if contrat:
         evenement = Evenement(
             contratId=contrat.contratId,
