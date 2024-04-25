@@ -49,19 +49,22 @@ def delete_contrat_view(contrats):
     contrat_id = int(input("Entrez l'Id du contrat a supprimer : "))
     return contrat_id
 
-def update_contrat_view(contrats):
-    show_contrat(contrats)
-    col_to_update = {"1": "montant total", "2": "montant restant", "3": "status du contrat"}
-    id_contrat = input("Choisissez l'ID du contrat à modifié : ")
+def update_evenement_view(evenements):
+    show_evenement(evenements)
+    col_to_update = {"1": "date début", "2": "date fin", "3": "changer / ajouter support", "4": "lieu", "5":"nombre d'invité", "6" :"note"}
+    id_contrat = input_int("Choisissez l'ID de l'evenement à modifié : ")
     [print(f"    {key}: {value}") for key, value in col_to_update.items()]
-    choix = input("Choisissez un champ a modifier : ")
+    choix = input_int("Choisissez un champ a modifier : ")
     try : 
-        col_to_update[choix]
-        col = int(choix)
+        col_to_update[str(choix)]
     except:
         print("merci de faire correctement")
-    while True:
-        new_data = input("Entrez la valeur (signed ou unsigned): ")
-        if new_data == "signed" or new_data == "unsigned":
-            break
-    return id_contrat, col, new_data
+    if choix == 1 or choix == 2 :
+        new_data = input_date("Entrez la nouvelle valeur : ") 
+    elif choix == 3:
+        new_data = input_int("Entrez la nouvelle valeur (L'Id du nouveau support) : ")
+    elif choix == 5:
+        new_data = input_int("Entrez la nouvelle valeur : ")
+    else:
+        new_data = input("Entrez la nouvelle valeur : ")
+    return id_contrat, choix, new_data

@@ -49,9 +49,12 @@ def update_contrat_view(contrats):
     [print(f"    {key}: {value}") for key, value in col_to_update.items()]
     choix = input_int("Choisissez un champ a modifier : ")
     try : 
-        col_to_update[choix]
+        col_to_update[str(choix)]
     except:
         print("merci de faire correctement")
-    new_data = input_signed("Entrez la valeur (signed ou unsigned): ")
+    if choix == 3:
+        new_data = input_signed("Entrez la valeur (signed ou unsigned): ")
+    else:
+        new_data = input_int("Entrez la valeur : ")
 
     return id_contrat, choix, new_data

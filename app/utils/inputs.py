@@ -30,3 +30,13 @@ def input_signed(phrase):
         except:
             red_print("Vous ne pouvez mettre que les valeurs signed ou unsigned")
     return data
+
+def input_role(phrase):
+    while True:
+        data = input(phrase)
+        try:
+            if data == "commercial" or data == "gestion" or data == "support":
+                break
+        except:
+            red_print("Role invalide !")
+    return data

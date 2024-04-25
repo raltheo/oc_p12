@@ -26,7 +26,7 @@ def update_client_view(clients):
     [print(f"    {key}: {value}") for key, value in col_to_update.items()]
     choix = input_int("Choisissez un champ a modifier : ")
     try : 
-        col_to_update[choix]
+        col_to_update[str(choix)]
     except:
         print("merci de faire correctement")
     new_data = input("Entrez la valeur : ")

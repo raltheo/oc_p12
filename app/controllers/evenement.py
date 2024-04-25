@@ -1,6 +1,6 @@
 from app.middleware import login_require, require_role
 from app.models import Client, Evenement, Contrat
-from app.views import show_evenement, menu_evenement_view, create_evenement_view
+from app.views import show_evenement, menu_evenement_view, create_evenement_view, update_evenement_view
 from app.controllers.client import liste_my_client
 from app.controllers.contrat import liste_my_contrat
 from app.utils import red_print, green_print
@@ -62,26 +62,29 @@ def delete_evenement(session, contrat_id, collaborateur_id=None, user_role=None)
     return False, "Contrat introuvable"
 
 @login_require
-@require_role(["admin", "gestion", "commercial"])
-def update_evenement(session, contrat_id, col, data, collaborateur_id=None, user_role=None):
-    contrat = session.query(Evenement).filter_by(contratId=contrat_id).first()
-    if contrat.client.collaborateurId != collaborateur_id and user_role == "commercial":
-        return False, "Vous ne pouvez pas mettre a jour les contrat d'autres clients"
-    if contrat:
+@require_role(["admin", "gestion", "support"])
+def update_evenement(session, evenement_id, col, data, collaborateur_id=None, user_role=None):
+    evenement = session.query(Evenement).filter_by(evenementId=evenement_id).first()
+    if evenement.supportId != collaborateur_id:
+        return False, "Vous ne pouvez pas mettre a jour les evenements ou vous n'êtes pas associer"
+    if col != 3 and user_role == "gestion":
+        return False, "Vous pouvez mettre à jour uniquement les support en charge de cet evenement"
+    if evenement:
         try:
-            if col == 1: contrat.montant_total = data
-            elif col == 2: contrat.montant_restant = data
-            elif col == 3: 
-                if data in ["unsigned", "signed"]:
-                    contrat.status_contrat = data
+            if col == 1: evenement.date_debut = data
+            elif col == 2: evenement.date_fin = data
+            elif col == 3: evenement.supportId = data
+            elif col == 4: evenement.lieu = data
+            elif col == 5: evenement.nombre_invites = data
+            elif col == 6: evenement.note = data
             else: return False, "Mauvais choix"
             session.commit()
-            return True, "Contrat mis a jour !"
+            return True, "Evenement mis a jour !"
         except Exception as e:
             print(e)
             session.rollback()
             return False, "Une erreur est survenue !"
-    return False, "Contrat introuvable"
+    return False, "Evenement introuvable"
 
 
 @login_require
@@ -97,13 +100,13 @@ def menu_evenement(session, collaborateur_id=None, user_role=None):
                 green_print(message)
             else:
                 red_print(message)
-        # if choix == 3:
-        #     id_contrat, col, new_data = update_contrat_view(liste_contrat(session))
-        #     state, message = update_contrat(session, id_contrat, col, new_data)
-        #     if state == True:
-        #         green_print(message)
-        #     else:
-        #         red_print(message)
+        if choix == 3:
+            id_evenement, col, new_data = update_evenement_view(liste_evenement(session))
+            state, message = update_evenement(session, id_evenement, col, new_data)
+            if state == True:
+                green_print(message)
+            else:
+                red_print(message)
         # if choix == 4:
         #     contrat_id = delete_contrat_view(liste_contrat(session))
         #     state, message = delete_contrat(session, contrat_id)
