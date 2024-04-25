@@ -24,10 +24,15 @@ def menu_evenement_view():
     print("    2: Crée un Evenement")
     print("    3: Modifier un Evenement")
     print("    4: Supprimé un Evenement")
-    print("    5: Retour")
+    print("    5: Afficher les filtres d'affichage")
+    print("    6: Retour")
     choix = input_int("\nEpicEvent# ")
     return choix
 
+def filtre_evenement_view():
+    print("    1: Afficher les evenements sans support associé")
+    choix = input_int("\nEpicEvent# ")
+    return choix
 def create_evenement_view(contrats):
     show_contrat(contrats)
     contrat_id = input_int("Choisissez l'ID du contrat a rattacher a l'évenement : ")

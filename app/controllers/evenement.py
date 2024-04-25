@@ -1,6 +1,6 @@
 from app.middleware import login_require, require_role
 from app.models import Evenement, Contrat
-from app.views import show_evenement, menu_evenement_view, create_evenement_view, update_evenement_view, delete_evenement_view
+from app.views import show_evenement, menu_evenement_view, filtre_evenement_view, create_evenement_view, update_evenement_view, delete_evenement_view
 from app.controllers.contrat import liste_my_contrat
 from app.utils import red_print, green_print
 from datetime import datetime
@@ -9,6 +9,24 @@ from datetime import datetime
 def format_date(date):
     date_object = datetime.strptime(str(date), "%Y-%m-%d")
     return date_object.strftime("%d/%m/%Y")
+
+
+@login_require
+def liste_evenement_filtre(session, option, collaborateur_id=None, user_role=None):
+    if option == 1 : evenements = session.query(Evenement).filter_by(supportId=None).all()
+    data = []
+    for evenement in evenements:
+        data.append([evenement.evenementId,
+                     evenement.contratId, 
+                     format_date(evenement.date_debut),
+                     format_date(evenement.date_fin),
+                     evenement.client.user.email,
+                     evenement.lieu,
+                     evenement.nombre_invites,
+                     evenement.support.user.email if evenement.support else "aucun support"
+                     ])
+    return data
+
 
 @login_require
 def liste_evenement(session, collaborateur_id=None, user_role=None):
@@ -64,7 +82,7 @@ def delete_evenement(session, evenement_id, collaborateur_id=None, user_role=Non
 @require_role(["admin", "gestion", "support"])
 def update_evenement(session, evenement_id, col, data, collaborateur_id=None, user_role=None):
     evenement = session.query(Evenement).filter_by(evenementId=evenement_id).first()
-    if evenement.supportId != collaborateur_id:
+    if evenement.supportId != collaborateur_id and user_role != "admin":
         return False, "Vous ne pouvez pas mettre a jour les evenements ou vous n'êtes pas associer"
     if col != 3 and user_role == "gestion":
         return False, "Vous pouvez mettre à jour uniquement les support en charge de cet evenement"
@@ -114,5 +132,9 @@ def menu_evenement(session, collaborateur_id=None, user_role=None):
             else:
                 red_print(message)
         if choix == 5:
+            new_choice = filtre_evenement_view()
+            if new_choice == 1:
+                show_evenement(liste_evenement_filtre(session, 1))
+        if choix == 6:
             break
     return
