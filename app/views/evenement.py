@@ -30,7 +30,8 @@ def menu_evenement_view():
     return choix
 
 def filtre_evenement_view():
-    print("    1: Afficher les evenements sans support associé")
+    print("    1: Afficher les évenements sans support associé")
+    print("    2: Afficher mes évenements")
     choix = input_int("\nEpicEvent# ")
     return choix
 

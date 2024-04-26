@@ -15,6 +15,7 @@ def format_date(date):
 @login_require
 def liste_evenement_filtre(session, option, collaborateur_id=None, user_role=None):
     if option == 1 : evenements = session.query(Evenement).filter_by(supportId=None).all()
+    if option == 1 : evenements = session.query(Evenement).filter_by(supportId=collaborateur_id).all()
     data = []
     for evenement in evenements:
         data.append([evenement.evenementId,
@@ -142,8 +143,8 @@ def menu_evenement(session, collaborateur_id=None, user_role=None):
                 red_print(message)
         if choix == 5:
             new_choice = filtre_evenement_view()
-            if new_choice == 1:
-                show_evenement(liste_evenement_filtre(session, 1))
+            if new_choice == 1: show_evenement(liste_evenement_filtre(session, 1))
+            if new_choice == 2: show_evenement(liste_evenement_filtre(session, 2))
         if choix == 6:
             break
     return
