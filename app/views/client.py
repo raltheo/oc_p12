@@ -1,5 +1,5 @@
 from prettytable import PrettyTable
-from app.utils import input_int
+from app.utils import input_int, input_email
 
 
 def show_client(clients):
@@ -13,7 +13,7 @@ def show_client(clients):
 
 def create_client_view():
     nom = input("Entrez le nom de l'utilsateur : ")
-    email = input("Entrez l'email de l'utilisateur : ")
+    email = input_email("Entrez l'email de l'utilisateur : ")
     telephone = input("Entrez le numéro de téléphone de l'utilisateur : ")
     nom_entreprise = input("Entrez le nom de l'entreprise du client : ")
     return nom, email, telephone, nom_entreprise
