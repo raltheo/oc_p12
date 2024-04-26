@@ -25,7 +25,15 @@ def menu_contrat_view():
     print("    2: Crée un contrat")
     print("    3: Modifier un contrat")
     print("    4: Supprimé un contrat")
-    print("    5: Retour")
+    print("    5: Afficher les filtres d'affichage")
+    print("    6: Retour")
+    choix = input_int("\nEpicEvent# ")
+    return choix
+
+def filtre_contrat_view():
+    print("    1: Afficher les contrats pas encore signé")
+    print("    2: Afficher les contrats pas encore payé totalement")
+    print("    2: Afficher mes contrats")
     choix = input_int("\nEpicEvent# ")
     return choix
 

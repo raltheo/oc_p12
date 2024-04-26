@@ -1,7 +1,7 @@
 from pydoc import cli
 from app.middleware import login_require, require_role
 from app.models import Contrat, Client
-from app.views import menu_contrat_view, create_contrat_view, show_contrat, delete_contrat_view, update_contrat_view
+from app.views import menu_contrat_view, create_contrat_view, show_contrat, delete_contrat_view, update_contrat_view, filtre_contrat_view
 from app.controllers.client import liste_client
 from app.utils import red_print, green_print
 
@@ -21,6 +21,22 @@ def liste_contrat(session, collaborateur_id=None, user_role=None):
                      ])
     return data
 
+@login_require
+def liste_contrat_filtre(session, option, collaborateur_id=None, user_role=None):
+    if option == 1 : contrats = session.query(Contrat).filter_by(status_contrat="unsigned").all()
+    if option == 2 : contrats = session.query(Contrat).filter(Contrat.montant_restant != 0).all()
+    if option == 3 : contrats = session.query(Contrat).filter_by(commercialId=collaborateur_id).all()
+    data = []
+    for contrat in contrats:
+        data.append([contrat.contratId,
+                     contrat.client.user.email, 
+                     contrat.commercial.user.email,
+                     contrat.montant_total,
+                     contrat.montant_restant,
+                     contrat.status_contrat,
+                     contrat.created_at
+                     ])
+    return data
 
 @login_require
 def liste_my_contrat(session, collaborateur_id=None, user_role=None):
@@ -121,5 +137,10 @@ def menu_contrat(session, collaborateur_id=None, user_role=None):
             else:
                 red_print(message)
         if choix == 5:
+            new_choice = filtre_contrat_view()
+            if new_choice == 1: show_contrat(liste_contrat_filtre(session, 1))
+            if new_choice == 2: show_contrat(liste_contrat_filtre(session, 2))
+            if new_choice == 3: show_contrat(liste_contrat_filtre(session, 3))
+        if choix == 6:
             break
     return
