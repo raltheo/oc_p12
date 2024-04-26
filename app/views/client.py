@@ -29,7 +29,10 @@ def update_client_view(clients):
         col_to_update[str(choix)]
     except:
         print("merci de faire correctement")
-    new_data = input("Entrez la valeur : ")
+    if choix == 2:
+        new_data = input_email("Entrez la valeur : ")
+    else:
+        new_data = input("Entrez la valeur : ")
     return id_client, choix, new_data
 
 def menu_client_view():

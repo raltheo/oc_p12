@@ -1,5 +1,5 @@
 from prettytable import PrettyTable
-from app.utils import input_int, input_role
+from app.utils import input_int, input_role, input_email
 
 
 def show_collaborateur(clients):
@@ -13,7 +13,7 @@ def show_collaborateur(clients):
 
 def create_collaborateur_view():
     nom = input("Entrez le nom de l'utilsateur : ")
-    email = input("Entrez l'email de l'utilisateur : ")
+    email = input_email("Entrez l'email de l'utilisateur : ")
     telephone = input("Entrez le numéro de téléphone de l'utilisateur : ")
     role = input_role("Entrez le role du collaborateur (gestion, commercial, support) : ")
     password = input("Entrez le mot de passe temporaire du collaborateur : ")
@@ -32,6 +32,8 @@ def update_collaborateur_view(collaborateurs, supports):
         print("merci de faire correctement")
     if choix == 4:
         new_data = input_role("Entrez le role : ")
+    elif choix == 2:
+        new_data = input_email("Entrez l'email : ")
     else:
         new_data = input("Entrez la valeur : ")
     return id_collaborateur, choix, new_data
