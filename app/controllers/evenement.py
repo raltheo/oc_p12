@@ -53,7 +53,7 @@ def create_evenement(session, contrat_id, date_debut, date_fin, lieu, support_id
     if support_id != None:
         support = session.query(Collaborateur).filter_by(collaborateurId=support_id).first()
         if not support or support.role.nom != "support":
-            return False, "Merci de mettre l'Id d'un support"
+            return False, "Merci de mettre l'Id d'un support ❌"
     if contrat:
         evenement = Evenement(
             contratId=contrat.contratId,
@@ -68,11 +68,11 @@ def create_evenement(session, contrat_id, date_debut, date_fin, lieu, support_id
         try:
             session.add(evenement)
             session.commit()
-            return True, "Evenement crée !"
+            return True, "Evenement crée ! ✔️"
         except:
             session.rollback()
-            return False, "Une erreur est survenue."
-    return False, "Contrat introuvable."
+            return False, "Une erreur est survenue. ❌"
+    return False, "Contrat introuvable. ❌"
 
 @login_require
 @require_role(["admin"])
@@ -81,21 +81,21 @@ def delete_evenement(session, evenement_id, collaborateur_id=None, user_role=Non
     if evenement:
             session.delete(evenement)
             session.commit()
-            return True, "Evenement supprimé."
-    return False, "Evenement introuvable"
+            return True, "Evenement supprimé. ✔️"
+    return False, "Evenement introuvable ❌"
 
 @login_require
 @require_role(["admin", "gestion", "support"])
 def update_evenement(session, evenement_id, col, data, collaborateur_id=None, user_role=None):
     evenement = session.query(Evenement).filter_by(evenementId=evenement_id).first()
     if evenement.supportId != collaborateur_id and user_role != "admin":
-        return False, "Vous ne pouvez pas mettre a jour les evenements ou vous n'êtes pas associer"
+        return False, "Vous ne pouvez pas mettre a jour les evenements ou vous n'êtes pas associer ❌"
     if col != 3 and user_role == "gestion":
-        return False, "Vous pouvez mettre à jour uniquement les support en charge de cet evenement"
+        return False, "Vous pouvez mettre à jour uniquement les support en charge de cet evenement ❌"
     if col == 3:
         support = session.query(Collaborateur).filter_by(collaborateurId=data).first()
         if not support or support.role.nom != "support":
-            return False, "Merci de mettre l'Id d'un support"
+            return False, "Merci de mettre l'Id d'un support ❌"
     if evenement:
         try:
             if col == 1: evenement.date_debut = data
@@ -104,14 +104,14 @@ def update_evenement(session, evenement_id, col, data, collaborateur_id=None, us
             elif col == 4: evenement.lieu = data
             elif col == 5: evenement.nombre_invites = data
             elif col == 6: evenement.note = data
-            else: return False, "Mauvais choix"
+            else: return False, "Mauvais choix ❌"
             session.commit()
-            return True, "Evenement mis a jour !"
+            return True, "Evenement mis a jour ! ✔️"
         except Exception as e:
             print(e)
             session.rollback()
-            return False, "Une erreur est survenue !"
-    return False, "Evenement introuvable"
+            return False, "Une erreur est survenue ! ❌"
+    return False, "Evenement introuvable ❌"
 
 
 @login_require

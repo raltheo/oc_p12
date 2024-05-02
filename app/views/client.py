@@ -1,6 +1,6 @@
 from prettytable import PrettyTable
 from app.utils import input_int, input_email
-
+from app.middleware import require_role, login_require
 
 def show_client(clients):
     x = PrettyTable()
@@ -11,6 +11,9 @@ def show_client(clients):
     print(x)
     print("\n")
 
+
+@login_require
+@require_role(["admin", "commercial"])
 def create_client_view():
     nom = input("Entrez le nom de l'utilsateur : ")
     email = input_email("Entrez l'email de l'utilisateur : ")
@@ -18,7 +21,8 @@ def create_client_view():
     nom_entreprise = input("Entrez le nom de l'entreprise du client : ")
     return nom, email, telephone, nom_entreprise
 
-
+@login_require
+@require_role(["admin", "commercial"])
 def update_client_view(clients):
     show_client(clients)
     col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "Entreprise"}
@@ -45,7 +49,8 @@ def menu_client_view():
     choix = input_int("\nEpicEvent# ")
     return choix
 
-
+@login_require
+@require_role(["admin", "commercial"])
 def delete_client_view(clients):
     show_client(clients)
     client_id = input_int("Entrez l'Id du client a supprimer : ")

@@ -1,6 +1,6 @@
 from prettytable import PrettyTable
-from app.utils import input_int, input_role, input_email
-
+from app.utils import input_int, input_role, input_email, input_password
+from app.middleware import require_role, login_require
 
 def show_collaborateur(clients):
     x = PrettyTable()
@@ -11,15 +11,18 @@ def show_collaborateur(clients):
     print(x)
     print("\n")
 
+@login_require
+@require_role(["admin", "gestion"])
 def create_collaborateur_view():
     nom = input("Entrez le nom de l'utilsateur : ")
     email = input_email("Entrez l'email de l'utilisateur : ")
     telephone = input("Entrez le numéro de téléphone de l'utilisateur : ")
     role = input_role("Entrez le role du collaborateur (gestion, commercial, support) : ")
-    password = input("Entrez le mot de passe temporaire du collaborateur : ")
+    password = input_password("Entrez le mot de passe temporaire du collaborateur : ")
     return nom, email, telephone, role, password
 
-
+@login_require
+@require_role(["admin", "gestion"])
 def update_collaborateur_view(collaborateurs, supports):
     show_collaborateur(collaborateurs)
     col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "role", "5": "password"}
@@ -48,6 +51,8 @@ def menu_collaborateur_view():
     choix = input_int("\nEpicEvent# ")
     return choix
 
+@login_require
+@require_role(["admin", "gestion"])
 def delete_collaborateur_view(collaborateurs):
     show_collaborateur(collaborateurs)
     col_id = input_int("Entrez l'Id du collaborateur a supprimer : ")

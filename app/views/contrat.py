@@ -2,7 +2,7 @@
 from app.views import show_client
 from prettytable import PrettyTable
 from app.utils import input_signed, input_int
-
+from app.middleware import require_role, login_require
 
 def show_contrat(contrats):
     x = PrettyTable()
@@ -33,10 +33,12 @@ def menu_contrat_view():
 def filtre_contrat_view():
     print("    1: Afficher les contrats pas encore signé")
     print("    2: Afficher les contrats pas encore payé totalement")
-    print("    2: Afficher mes contrats")
+    print("    3: Afficher mes contrats")
     choix = input_int("\nEpicEvent# ")
     return choix
 
+@login_require
+@require_role(["admin", "gestion"])
 def create_contrat_view(clients):
     show_client(clients)
     client_id = input_int("Choisissez l'ID du client pour le contrat : ")
@@ -45,11 +47,15 @@ def create_contrat_view(clients):
     status_contrat = input_signed("Entrez le status du contrat (unsigned ou signed) : ")
     return client_id, montant_total, montant_restant, status_contrat
 
+@login_require
+@require_role(["admin", "gestion"])
 def delete_contrat_view(contrats):
     show_contrat(contrats)
     contrat_id = input_int("Entrez l'Id du contrat a supprimer : ")
     return contrat_id
 
+@login_require
+@require_role(["admin", "gestion", "commercial"])
 def update_contrat_view(contrats):
     show_contrat(contrats)
     col_to_update = {"1": "montant total", "2": "montant restant", "3": "status du contrat"}

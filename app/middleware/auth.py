@@ -13,11 +13,11 @@ def login_require(func):
             return func(*args, collaborateur_id=data["collaborateur_id"], user_role=data["role"], **kwargs)
         except jwt.ExpiredSignatureError as e:
             delete_jwt()
-            print("Token expired. Login required", e)
+            print("Token expired. Login required ❌", e)
             exit(1)
         except jwt.InvalidTokenError as e:
             delete_jwt()
-            print("Invalid token. Login required", e)
+            print("Invalid token. Login required ❌", e)
             exit(1)
         except Exception as e:
             print("Error: ", e)

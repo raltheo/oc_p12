@@ -9,7 +9,7 @@ def require_role(roles):
             if user_role in roles:
                 return func(*args, **kwargs)
             else:
-                red_print("Accès refusé : l'utilisateur n'a pas le rôle requis.")
+                red_print(f"Accès refusé : Vous n'avez pas le rôle requis. (role requis : {', '.join([x for x in roles])}) ❌")
                 return
         return wrapper
     return decorator

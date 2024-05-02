@@ -39,25 +39,25 @@ def liste_my_client(session, collaborateur_id=None, user_role=None):
 def update_client(session, client_id, col, data, collaborateur_id=None, user_role=None):
     client = session.query(Client).filter_by(clientId=client_id).first()
     if client.collaborateurId != collaborateur_id and user_role != "admin":
-        return False, "Vous devez être le commercial du client pour pouvoir faire cela."
+        return False, "Vous devez être le commercial du client pour pouvoir faire cela. ❌"
     if col == 2:
         verif_mail = session.query(User).filter_by(email=data).first()
         if verif_mail:
-            return False, "Email already used"
+            return False, "Email already used ❌"
     if client:
         try:
             if col == 1: client.user.nom = data
             elif col == 2: client.user.email = data
             elif col == 3: client.user.telephone = data
             elif col == 4: client.nom_entreprise = data
-            else: return False, "Mauvais choix"
+            else: return False, "Mauvais choix ❌"
             session.commit()
-            return True, "Client mis a jour !"
+            return True, "Client mis a jour ! ✔️"
         except Exception as e:
             print(e)
             session.rollback()
-            return False, "Une erreur est survenue !"
-    return False, "Client introuvable"
+            return False, "Une erreur est survenue ! ❌"
+    return False, "Client introuvable ❌"
 
 
 @login_require
@@ -65,7 +65,7 @@ def update_client(session, client_id, col, data, collaborateur_id=None, user_rol
 def create_client(session, nom, email, telephone, nom_entreprise, collaborateur_id=None, user_role=None):
     verif_mail = session.query(User).filter_by(email=email).first()
     if verif_mail:
-        return False, "Email already used"
+        return False, "Email already used ❌"
     new_user = User(
                 nom=nom,
                 email=email,
@@ -81,7 +81,7 @@ def create_client(session, nom, email, telephone, nom_entreprise, collaborateur_
     )
     session.add(new_client)
     session.commit()
-    return True, "Client crée avec success !"
+    return True, "Client crée avec success ! ✔️"
     
 
 @login_require
@@ -92,9 +92,9 @@ def delete_client(session, client_id, collaborateur_id=None, user_role=None):
         if client.collaborateurId == collaborateur_id or user_role == "admin":
             session.delete(client)
             session.commit()
-            return True, "Client supprimé."
-        return False, "Vous devez être le commercial du client pour le supprimer."
-    return False, "Client introuvable"
+            return True, "Client supprimé. ✔️"
+        return False, "Vous devez être le commercial du client pour le supprimer. ❌"
+    return False, "Client introuvable ❌"
 
 @login_require
 def menu_client(session, collaborateur_id=None, user_role=None):
@@ -125,6 +125,4 @@ def menu_client(session, collaborateur_id=None, user_role=None):
                 red_print(message)
         if choix == 5:
             break
-        else:
-            print("please enter good number")
     return

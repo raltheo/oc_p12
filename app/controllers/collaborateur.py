@@ -37,7 +37,7 @@ def update_collaborateur(session, collaborator_id, col, data, collaborateur_id=N
     if col == 2:
         verif_mail = session.query(User).filter_by(email=data).first()
         if verif_mail:
-            return False, "Email already used"
+            return False, "Email already used ❌"
     if collaborateur:
         try:
             if col == 1: collaborateur.user.nom = data
@@ -45,20 +45,20 @@ def update_collaborateur(session, collaborator_id, col, data, collaborateur_id=N
             elif col == 3: collaborateur.user.telephone = data
             elif col == 4 : collaborateur.role = data
             elif col == 5: collaborateur.password = data
-            else: return False, "Mauvais choix"
+            else: return False, "Mauvais choix ❌"
             session.commit()
-            return True, "Collaborateur mis a jour !"
+            return True, "Collaborateur mis a jour ! ✔️"
         except:
             session.rollback()
-            return False, "Une erreur est survenue !"
-    return False, "Collaborateur introuvable"
+            return False, "Une erreur est survenue ! ❌"
+    return False, "Collaborateur introuvable ❌"
 
 @login_require
 @require_role(["admin", "gestion"])
 def create_collaborateur(session, nom, email, telephone, role, password, collaborateur_id=None, user_role=None):
     verif_mail = session.query(User).filter_by(email=email).first()
     if verif_mail:
-        return False, "Email already used"
+        return False, "Email already used ❌"
     new_user = User(
                 nom=nom,
                 email=email,
@@ -68,7 +68,7 @@ def create_collaborateur(session, nom, email, telephone, role, password, collabo
     session.flush() 
     role = session.query(Role).filter_by(nom=role).first()
     if not role:
-        return False, "Invalid role"
+        return False, "Invalid role ❌"
     
     new_collaborateur = Collaborateur(
         userId=new_user.userId,
@@ -77,7 +77,7 @@ def create_collaborateur(session, nom, email, telephone, role, password, collabo
     )
     session.add(new_collaborateur)
     session.commit()
-    return True, "Collaborateur crée avec success !"
+    return True, "Collaborateur crée avec success ! ✔️"
 
 @login_require
 @require_role(["admin", "gestion"])
@@ -86,8 +86,8 @@ def delete_collaborateur(session, col_id, collaborateur_id=None, user_role=None)
     if collaborateur:
         session.delete(collaborateur)
         session.commit()
-        return True, "Collaborateur supprimé."
-    return False, "Collaborateur introuvable"
+        return True, "Collaborateur supprimé. ✔️"
+    return False, "Collaborateur introuvable ❌"
 
 @login_require
 def menu_collaborateur(session, collaborateur_id=None, user_role=None):

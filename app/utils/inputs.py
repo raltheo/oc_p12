@@ -1,6 +1,7 @@
 from datetime import datetime
 from .color import red_print
 import re
+import getpass
 
 def input_int(phrase):
     while True:
@@ -9,8 +10,12 @@ def input_int(phrase):
             int(data)
             break
         except:
-            red_print("Un nombre est attendu")
+            red_print("Un nombre est attendu ❌")
     return int(data)
+
+def input_password(phrase):
+    return getpass.getpass(prompt=phrase)
+
 
 def input_date(phrase):
     while True:
@@ -19,7 +24,7 @@ def input_date(phrase):
             data = datetime.strptime(data ,'%d/%m/%Y').strftime('%Y-%m-%d')
             break
         except:
-            red_print("Une date est attendu (format : jj/mm/aaaa)")
+            red_print("Une date est attendu (format : jj/mm/aaaa) ❌")
     return data
 
 def input_signed(phrase):
@@ -29,7 +34,7 @@ def input_signed(phrase):
             if data == "signed" or data == "unsigned":
                 break
         except:
-            red_print("Vous ne pouvez mettre que les valeurs signed ou unsigned")
+            red_print("Vous ne pouvez mettre que les valeurs signed ou unsigned ❌")
     return data
 
 def input_role(phrase):
@@ -39,7 +44,7 @@ def input_role(phrase):
             if data == "commercial" or data == "gestion" or data == "support":
                 break
         except:
-            red_print("Role invalide !")
+            red_print("Role invalide ! ❌")
     return data
 
 def input_email(phrase):
@@ -50,7 +55,7 @@ def input_email(phrase):
             m = re.match(reg, data)
             if m:
                 break
-            red_print("Merci d'entrer une email valide !")
+            red_print("Merci d'entrer une email valide ! ❌")
         except:
-            red_print("Merci d'entrer une email valide !")
+            red_print("Merci d'entrer une email valide ! ❌")
     return data

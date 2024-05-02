@@ -1,11 +1,15 @@
-from app.controllers.auth import login, start_check_auth
 from app.models.base import SessionLocal
+
 from app.views import menu_view, login_view
+
 from app.utils import red_print, green_print, delete_jwt
+
+from app.controllers.auth import login, start_check_auth
 from app.controllers.client import menu_client
 from app.controllers.collaborateur import menu_collaborateur
 from app.controllers.contrat import menu_contrat
 from app.controllers.evenement import menu_evenement
+from app.controllers.account import menu_account
 
 session = SessionLocal()
 
@@ -23,9 +27,11 @@ def start_app():
             if choix == 4:
                 menu_evenement(session)
             if choix == 5:
+                menu_account(session)
+            if choix == 6:
                 delete_jwt()
                 break
-            if choix == 6:
+            if choix == 7:
                 break
         exit(0)
     else:   

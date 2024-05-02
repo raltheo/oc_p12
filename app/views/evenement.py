@@ -1,6 +1,7 @@
 from app.views import show_client, show_contrat, show_collaborateur
 from prettytable import PrettyTable
 from app.utils import input_date, input_int
+from app.middleware import require_role, login_require
 
 def show_evenement(evenements):
     x = PrettyTable()
@@ -35,6 +36,8 @@ def filtre_evenement_view():
     choix = input_int("\nEpicEvent# ")
     return choix
 
+@login_require
+@require_role(["admin", "commercial"])
 def create_evenement_view(contrats, supports):
     show_contrat(contrats)
     contrat_id = input_int("Choisissez l'ID du contrat a rattacher a l'évenement : ")
@@ -52,11 +55,16 @@ def create_evenement_view(contrats, supports):
 
     return contrat_id, date_debut, date_fin, lieu, support_id, nombre_invite, note
 
+
+@login_require
+@require_role(["admin"])
 def delete_evenement_view(evenements):
     show_evenement(evenements)
     evenement_id = input_int("Entrez l'Id du contrat a supprimer : ")
     return evenement_id
 
+@login_require
+@require_role(["admin", "gestion", "support"])
 def update_evenement_view(evenements, supports):
     show_evenement(evenements)
     col_to_update = {"1": "date début", "2": "date fin", "3": "changer / ajouter support", "4": "lieu", "5":"nombre d'invité", "6" :"note"}

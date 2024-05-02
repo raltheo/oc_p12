@@ -29,10 +29,10 @@ def start_check_auth(session):
 def login(session, email, password):
     user = session.query(User).filter_by(email=email).first()
     if not user:
-        return False, "User not found"
+        return False, "User not found ❌"
     collaborateur = user.collaborateur
     if collaborateur and bcrypt.checkpw(password.encode('utf-8'), collaborateur.password.encode('utf-8')):
         create_token(collaborateur.collaborateurId, collaborateur.role.nom)
-        return True, "Login successful"
+        return True, "Login successful ✔️"
     else:
-        return False, "Incorrect password"
+        return False, "Incorrect password ❌"
