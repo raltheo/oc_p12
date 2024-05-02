@@ -2,6 +2,8 @@ from datetime import datetime
 from .color import red_print
 import re
 import getpass
+from sentry_sdk import capture_message
+
 
 def input_int(phrase):
     while True:
@@ -11,6 +13,7 @@ def input_int(phrase):
             break
         except:
             red_print("Un nombre est attendu ❌")
+            capture_message('Input failure (int)')
     return int(data)
 
 def input_password(phrase):
@@ -25,6 +28,7 @@ def input_date(phrase):
             break
         except:
             red_print("Une date est attendu (format : jj/mm/aaaa) ❌")
+            capture_message('Input failure (date)')
     return data
 
 def input_signed(phrase):
@@ -35,6 +39,7 @@ def input_signed(phrase):
                 break
         except:
             red_print("Vous ne pouvez mettre que les valeurs signed ou unsigned ❌")
+            capture_message('Input failure (signed or unsigned)')
     return data
 
 def input_role(phrase):
@@ -45,6 +50,7 @@ def input_role(phrase):
                 break
         except:
             red_print("Role invalide ! ❌")
+            capture_message('Input failure (role)')
     return data
 
 def input_email(phrase):
@@ -56,6 +62,8 @@ def input_email(phrase):
             if m:
                 break
             red_print("Merci d'entrer une email valide ! ❌")
+            capture_message('Input failure (email)')
         except:
             red_print("Merci d'entrer une email valide ! ❌")
+            capture_message('Input failure (email)')
     return data
