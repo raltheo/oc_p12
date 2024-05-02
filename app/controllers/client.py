@@ -89,8 +89,10 @@ def create_client(session, nom, email, telephone, nom_entreprise, collaborateur_
 def delete_client(session, client_id, collaborateur_id=None, user_role=None):
     client = session.query(Client).filter_by(clientId=client_id).first()
     if client:
+        user = session.query(User).filter_by(userId=client.user.userId).first()
         if client.collaborateurId == collaborateur_id or user_role == "admin":
             session.delete(client)
+            session.delete(user)
             session.commit()
             return True, "Client supprimé. ✔️"
         return False, "Vous devez être le commercial du client pour le supprimer. ❌"

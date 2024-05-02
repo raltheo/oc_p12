@@ -38,7 +38,7 @@ def filtre_evenement_view():
 
 @login_require
 @require_role(["admin", "commercial"])
-def create_evenement_view(contrats, supports):
+def create_evenement_view(contrats, supports, collaborateur_id=None, user_role=None):
     show_contrat(contrats)
     contrat_id = input_int("Choisissez l'ID du contrat a rattacher a l'évenement : ")
     date_debut = input_date("Entrez la date de debut (format jj/mm/aaaa) : ")
@@ -58,14 +58,14 @@ def create_evenement_view(contrats, supports):
 
 @login_require
 @require_role(["admin"])
-def delete_evenement_view(evenements):
+def delete_evenement_view(evenements, collaborateur_id=None, user_role=None):
     show_evenement(evenements)
     evenement_id = input_int("Entrez l'Id du contrat a supprimer : ")
     return evenement_id
 
 @login_require
 @require_role(["admin", "gestion", "support"])
-def update_evenement_view(evenements, supports):
+def update_evenement_view(evenements, supports, collaborateur_id=None, user_role=None):
     show_evenement(evenements)
     col_to_update = {"1": "date début", "2": "date fin", "3": "changer / ajouter support", "4": "lieu", "5":"nombre d'invité", "6" :"note"}
     id_contrat = input_int("Choisissez l'ID de l'evenement à modifié : ")

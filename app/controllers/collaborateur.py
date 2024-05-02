@@ -1,3 +1,4 @@
+from re import S
 from app.models import Collaborateur, User, Role
 from app.views import show_collaborateur, update_collaborateur_view, menu_collaborateur_view, create_collaborateur_view,delete_collaborateur_view
 from app.utils import red_print, green_print, hash_password
@@ -84,7 +85,9 @@ def create_collaborateur(session, nom, email, telephone, role, password, collabo
 def delete_collaborateur(session, col_id, collaborateur_id=None, user_role=None):
     collaborateur = session.query(Collaborateur).filter_by(collaborateurId=col_id).first()
     if collaborateur:
+        user = session.query(User).filter_by(userId=collaborateur.user.userId).first()
         session.delete(collaborateur)
+        session.delete(user)
         session.commit()
         return True, "Collaborateur supprimé. ✔️"
     return False, "Collaborateur introuvable ❌"

@@ -39,7 +39,7 @@ def filtre_contrat_view():
 
 @login_require
 @require_role(["admin", "gestion"])
-def create_contrat_view(clients):
+def create_contrat_view(clients, collaborateur_id=None, user_role=None):
     show_client(clients)
     client_id = input_int("Choisissez l'ID du client pour le contrat : ")
     montant_total = input_int("Entrez le montant total : ")
@@ -49,14 +49,14 @@ def create_contrat_view(clients):
 
 @login_require
 @require_role(["admin", "gestion"])
-def delete_contrat_view(contrats):
+def delete_contrat_view(contrats, collaborateur_id=None, user_role=None):
     show_contrat(contrats)
     contrat_id = input_int("Entrez l'Id du contrat a supprimer : ")
     return contrat_id
 
 @login_require
 @require_role(["admin", "gestion", "commercial"])
-def update_contrat_view(contrats):
+def update_contrat_view(contrats, collaborateur_id=None, user_role=None):
     show_contrat(contrats)
     col_to_update = {"1": "montant total", "2": "montant restant", "3": "status du contrat"}
     id_contrat = input_int("Choisissez l'ID du contrat à modifié : ")

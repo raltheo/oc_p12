@@ -13,7 +13,7 @@ def show_collaborateur(clients):
 
 @login_require
 @require_role(["admin", "gestion"])
-def create_collaborateur_view():
+def create_collaborateur_view(collaborateur_id=None, user_role=None):
     nom = input("Entrez le nom de l'utilsateur : ")
     email = input_email("Entrez l'email de l'utilisateur : ")
     telephone = input("Entrez le numéro de téléphone de l'utilisateur : ")
@@ -23,7 +23,7 @@ def create_collaborateur_view():
 
 @login_require
 @require_role(["admin", "gestion"])
-def update_collaborateur_view(collaborateurs, supports):
+def update_collaborateur_view(collaborateurs, supports, collaborateur_id=None, user_role=None):
     show_collaborateur(collaborateurs)
     col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "role", "5": "password"}
     id_collaborateur = input_int("Choisissez l'ID du collaborateur à modifié : ")
@@ -53,7 +53,7 @@ def menu_collaborateur_view():
 
 @login_require
 @require_role(["admin", "gestion"])
-def delete_collaborateur_view(collaborateurs):
+def delete_collaborateur_view(collaborateurs, collaborateur_id=None, user_role=None):
     show_collaborateur(collaborateurs)
     col_id = input_int("Entrez l'Id du collaborateur a supprimer : ")
     return col_id

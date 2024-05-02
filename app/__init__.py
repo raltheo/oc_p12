@@ -53,6 +53,52 @@ def create_admin():
     finally:
         session.close()
 
+
+def create_collaborator(nom, email, telephone, role_id, password):
+    session = SessionLocal()
+    try:
+        new_user = User(
+            nom=nom,
+            email=email,
+            telephone=telephone
+        )
+        session.add(new_user)
+        session.flush() 
+
+        new_collaborateur = Collaborateur(
+            userId=new_user.userId,
+            role_id=role_id,
+            password=hash_password(password).decode()
+        )
+        session.add(new_collaborateur)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+    finally:
+        session.close()
+
+def create_sup_ges_com():
+    session = SessionLocal()
+    try:
+        support_role = session.query(Role).filter_by(nom='support').first()
+        commercial_role = session.query(Role).filter_by(nom='commercial').first()
+        gestion_role = session.query(Role).filter_by(nom='gestion').first()
+    
+        support = session.query(User).filter_by(email="support@example.com").first()
+        commercial = session.query(User).filter_by(email="commercial@example.com").first()
+        gestion = session.query(User).filter_by(email="gestion@example.com").first()
+        if not support and support_role: 
+            create_collaborator("support", "support@example.com", "1234567890", support_role.roleId, "support")
+        if not commercial and commercial_role: 
+            create_collaborator("commercial", "commercial@example.com", "1234567890", commercial_role.roleId, "commercial")
+        if not gestion and gestion_role: 
+            create_collaborator("gestion", "gestion@example.com", "1234567890", gestion_role.roleId, "gestion")
+    except:
+        pass
+            
+           
+
 create_tables()
 create_roles()
 create_admin()
+create_sup_ges_com()

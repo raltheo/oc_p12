@@ -14,7 +14,7 @@ def show_client(clients):
 
 @login_require
 @require_role(["admin", "commercial"])
-def create_client_view():
+def create_client_view(collaborateur_id=None, user_role=None):
     nom = input("Entrez le nom de l'utilsateur : ")
     email = input_email("Entrez l'email de l'utilisateur : ")
     telephone = input("Entrez le numéro de téléphone de l'utilisateur : ")
@@ -23,7 +23,7 @@ def create_client_view():
 
 @login_require
 @require_role(["admin", "commercial"])
-def update_client_view(clients):
+def update_client_view(clients, collaborateur_id=None, user_role=None):
     show_client(clients)
     col_to_update = {"1": "nom", "2": "email", "3": "téléphone", "4" : "Entreprise"}
     id_client = input_int("Choisissez l'ID du client à modifié : ")
@@ -51,7 +51,7 @@ def menu_client_view():
 
 @login_require
 @require_role(["admin", "commercial"])
-def delete_client_view(clients):
+def delete_client_view(clients, collaborateur_id=None, user_role=None):
     show_client(clients)
     client_id = input_int("Entrez l'Id du client a supprimer : ")
     return client_id
