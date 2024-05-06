@@ -3,7 +3,7 @@
 clone the repo 
 ```sh
 git https://github.com/raltheo/oc_p12.git
-cd oc_python_p9
+cd oc_p12
 ```
 create new virtual environnement
 ```sh
