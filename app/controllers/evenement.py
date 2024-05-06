@@ -75,7 +75,7 @@ def create_evenement(session, contrat_id, date_debut, date_fin, lieu, support_id
     return False, "Contrat introuvable. ❌"
 
 @login_require
-@require_role(["admin"])
+@require_role(["admin", "commercial"])
 def delete_evenement(session, evenement_id, collaborateur_id=None, user_role=None):
     evenement = session.query(Evenement).filter_by(evenementId=evenement_id).first()
     if evenement:
@@ -88,7 +88,7 @@ def delete_evenement(session, evenement_id, collaborateur_id=None, user_role=Non
 @require_role(["admin", "gestion", "support"])
 def update_evenement(session, evenement_id, col, data, collaborateur_id=None, user_role=None):
     evenement = session.query(Evenement).filter_by(evenementId=evenement_id).first()
-    if evenement.supportId != collaborateur_id and user_role != "admin":
+    if evenement.supportId != collaborateur_id and user_role != "admin" and user_role != "gestion":
         return False, "Vous ne pouvez pas mettre a jour les evenements ou vous n'êtes pas associer ❌"
     if col != 3 and user_role == "gestion":
         return False, "Vous pouvez mettre à jour uniquement les support en charge de cet evenement ❌"

@@ -5,3 +5,4 @@ venv/
 .token
 notes
 .coverage
+.pytest_cache/
