@@ -121,6 +121,7 @@ class test_commercial:
             if x[4] == "test_commercial@ac.com":
                 id_ev = x[0]
         res, mess = delete_evenement(session, id_ev)
+        assert "✔️" in mess
 
 def test():
     """
