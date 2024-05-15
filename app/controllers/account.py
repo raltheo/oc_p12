@@ -18,7 +18,6 @@ def account_info(session, collaborateur_id=None, user_role=None):
 
 
 @login_require
-@require_role(["admin", "commercial"])
 def update_account(session, col, data, collaborateur_id=None, user_role=None):
     compte = session.query(Collaborateur).filter_by(collaborateurId=collaborateur_id).first()
     if col == 2:

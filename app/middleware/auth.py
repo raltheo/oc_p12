@@ -20,6 +20,5 @@ def login_require(func):
             print("Invalid token. Login required ❌", e)
             exit(1)
         except Exception as e:
-            print("Error: ", e)
             return
     return wrapper
