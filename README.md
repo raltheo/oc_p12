@@ -2,7 +2,7 @@
 ## Installation
 clone the repo 
 ```sh
-git https://github.com/raltheo/oc_p12.git
+git clone https://github.com/raltheo/oc_p12.git
 cd oc_p12
 ```
 create new virtual environnement
@@ -50,6 +50,20 @@ support@example.com:support
 commercial@example.com:commercial
 gestion@example.com:gestion
 ```
+
+### Database :
+- Need PostgresSql DB
+
+default conf needed :
+```sh
+DB_PORT = 5432
+DB_NAME = "epicevents"
+DB_USER = "postgres"
+DB_PASSWORD = "root"
+DB_HOST = "localhost"
+```
+
+You can change theese option in `settings.py`
 
 * * *
 
