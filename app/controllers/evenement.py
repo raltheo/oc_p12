@@ -15,7 +15,7 @@ def format_date(date):
 @login_require
 def liste_evenement_filtre(session, option, collaborateur_id=None, user_role=None):
     if option == 1 : evenements = session.query(Evenement).filter_by(supportId=None).all()
-    if option == 1 : evenements = session.query(Evenement).filter_by(supportId=collaborateur_id).all()
+    if option == 2 : evenements = session.query(Evenement).filter_by(supportId=collaborateur_id).all()
     data = []
     for evenement in evenements:
         data.append([evenement.evenementId,
@@ -25,7 +25,8 @@ def liste_evenement_filtre(session, option, collaborateur_id=None, user_role=Non
                      evenement.client.user.email,
                      evenement.lieu,
                      evenement.nombre_invites,
-                     evenement.support.user.email if evenement.support else "aucun support"
+                     evenement.support.user.email if evenement.support else "aucun support",
+                     evenement.note if evenement.note else "aucune note"
                      ])
     return data
 
@@ -42,7 +43,8 @@ def liste_evenement(session, collaborateur_id=None, user_role=None):
                      evenement.client.user.email,
                      evenement.lieu,
                      evenement.nombre_invites,
-                     evenement.support.user.email if evenement.support else "aucun support"
+                     evenement.support.user.email if evenement.support else "aucun support",
+                     evenement.note if evenement.note else "aucune note"
                      ])
     return data
 

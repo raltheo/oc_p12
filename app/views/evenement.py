@@ -12,7 +12,8 @@ def show_evenement(evenements):
                      "Client email", 
                      "lieu",
                      "Nombre d'invité",
-                     "support email"]
+                     "support email",
+                     "note"]
     for evenement in evenements:
         x.add_row(evenement)
     print("\n")
@@ -32,7 +33,7 @@ def menu_evenement_view():
 
 def filtre_evenement_view():
     print("    1: Afficher les évenements sans support associé")
-    print("    2: Afficher mes évenements")
+    print("    2: Afficher mes évenements (pour support)")
     choix = input_int("\nEpicEvent# ")
     return choix
 
